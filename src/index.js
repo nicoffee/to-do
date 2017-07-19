@@ -65,10 +65,10 @@ const store = createStore(todoApp);
 let nextTodoId = 0;
 
 const FilterLink = ({
-    filter,
-    currentFilter,
-    children
-}) => {
+                        filter,
+                        currentFilter,
+                        children
+                    }) => {
     if (filter === currentFilter) {
         return <span>{children}</span>
     }
@@ -85,6 +85,34 @@ const FilterLink = ({
       </a>
     );
 };
+
+// () => {
+//     store.dispatch({
+//         type: 'TOGGLE_TODO',
+//         id: todo.id
+//     });
+// }
+
+const Todo = ({onClick, completed, text}) => {
+    return (<li
+      style={{textDecoration: (completed) ? 'line-through' : 'none'}}
+      onClick={onClick}
+    >
+        {text}
+    </li>)
+}
+
+const TodoList = ({
+                      todos
+                  }) => (
+  <ul>
+      {todos.map(todo =>
+        <Todo key={todo.id}
+              {...todo}
+              onClick={() => onTodoClick(todo.id)}/>
+      )}
+  </ul>
+);
 
 const getVisibleTodos = (todos,
                          filter) => {
@@ -134,24 +162,15 @@ class TodoApp extends Component {
               }}>
                   Remove Last Todo
               </button>
-              <ul>
-                  {visibleTodos.map(todo =>
-                    <li
-                      style={{
-                          textDecoration: (todo.completed) ? 'line-through' : 'none'
-                      }}
-                      key={todo.id}
-                      onClick={() => {
-                          store.dispatch({
-                              type: 'TOGGLE_TODO',
-                              id: todo.id
-                          });
-                      }}
-                    >
-                        {todo.text}
-                    </li>
-                  )}
-              </ul>
+              <TodoList
+                todos={visibleTodos}
+                onTodoClick={id =>
+                    store.dispatch({
+                        type: 'TOGGLE_TODO',
+                        id
+                    })
+                }
+              />
               <p>
                   Show:
                   {' '}
