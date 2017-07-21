@@ -1,10 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {createStore} from 'redux'
-import addTodo from './reducers/addTodo'
+import {createStore, combineReducers} from 'redux'
+import todos from './reducers/addTodo'
 import './index.css'
 
-const store = createStore(addTodo);
+const todoApp = combineReducers({
+    todos: todos,
+});
+
+const store = createStore(todoApp);
+
+let nextToDoId = 0;
 
 class TodoApp extends React.Component {
     render() {
@@ -12,21 +18,43 @@ class TodoApp extends React.Component {
           <div>
               <input ref={(node) => {
                   this.input = node;
-              }} />
+              }}/>
               <button onClick={() => {
                   store.dispatch(
                     {
                         type: 'ADD_TODO',
-                        text: this.input.value
+                        text: this.input.value,
+                        id: nextToDoId++
                     }
-                  )
+                  );
+                  this.input.value = '';
               }}
               >
                   Add todo
               </button>
+              {/*<button onClick={() => {*/}
+                  {/*store.map((store) => dispatch(*/}
+                    {/*{*/}
+                        {/*type: 'TOGGLE_TODO',*/}
+                        {/*id: store.id*/}
+                    {/*}*/}
+                  {/*))*/}
+              {/*}}*/}
+              {/*>*/}
+                  {/*Toggle todo*/}
+              {/*</button>*/}
               <ul>
-                  { console.log('store.getState()', store.getState())} {store.getState().map((todo, id) =>
-                    <li key={id}>
+                  {this.props.todos.map((todo, id) =>
+                    <li
+                      key={id}
+                      onClick={() => store.dispatch(
+                        {
+                            type: 'TOGGLE_TODO',
+                            id: todo.id
+                        }
+                      )}
+                      style={{textDecoration: (todo.completed) ? 'line-through' : '' }}
+                    >
                         {todo.text}
                     </li>)
                   }
@@ -38,7 +66,7 @@ class TodoApp extends React.Component {
 
 const render = () => {
     ReactDOM.render(
-      <TodoApp />, document.getElementById('root')
+      <TodoApp todos={store.getState().todos}/>, document.getElementById('root')
     );
 };
 
