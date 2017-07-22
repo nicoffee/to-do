@@ -11,6 +11,15 @@ const todoApp = combineReducers({
     visibilityFilter: visibilityFilter
 });
 
+const setFilterAction = (filter) => {
+    store.dispatch(
+      {
+          type: 'SET_VISIBILITY_FILTER',
+          filter: filter
+      }
+    )
+};
+
 const store = createStore(todoApp);
 
 let nextToDoId = 0;
@@ -53,36 +62,15 @@ class TodoApp extends React.Component {
                     </li>)
                   }
               </ul>
-              <span onClick={() => {
-                  store.dispatch(
-                    {
-                        type: 'SET_VISIBILITY_FILTER',
-                        filter: 'SHOW_ALL'
-                    }
-                  )
-              }}>
+              <span onClick={setFilterAction('SHOW_ALL')}>
                   All
               </span>
               {' '}
-              <span onClick={() => {
-                  store.dispatch(
-                    {
-                        type: 'SET_VISIBILITY_FILTER',
-                        filter: 'SHOW_COMPLETED'
-                    }
-                  )
-              }}>
+              <span onClick={setFilterAction('SHOW_COMPLETED')}>
                   Completed
               </span >
               {' '}
-              <span onClick={() => {
-                  store.dispatch(
-                    {
-                        type: 'SET_VISIBILITY_FILTER',
-                        filter: 'SHOW_ACTIVE'
-                    }
-                  )
-              }}>
+              <span onClick={setFilterAction('SHOW_ACTIVE')}>
                   Active
               </span>
           </div>
