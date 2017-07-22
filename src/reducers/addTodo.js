@@ -11,13 +11,9 @@ const todos = (state = [], action) => {
             ];
         case 'TOGGLE_TODO':
             return state.map((todo) => {
-                console.log(action);
-
                 if (todo.id !== action.id) {
                     return todo;
                 }
-
-                console.log(todo);
 
                 return {
                     ...todo,

@@ -2,10 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {createStore, combineReducers} from 'redux'
 import todos from './reducers/addTodo'
+import visibilityFilter from './reducers/visibilityFilter'
+import getVisibleTodos from './reducers/getVisibleTodos'
 import './index.css'
 
 const todoApp = combineReducers({
     todos: todos,
+    visibilityFilter: visibilityFilter
 });
 
 const store = createStore(todoApp);
@@ -14,6 +17,8 @@ let nextToDoId = 0;
 
 class TodoApp extends React.Component {
     render() {
+        const visibleTodos = getVisibleTodos(this.props.todos, this.props.visibilityFilter);
+
         return (
           <div>
               <input ref={(node) => {
@@ -32,19 +37,8 @@ class TodoApp extends React.Component {
               >
                   Add todo
               </button>
-              {/*<button onClick={() => {*/}
-                  {/*store.map((store) => dispatch(*/}
-                    {/*{*/}
-                        {/*type: 'TOGGLE_TODO',*/}
-                        {/*id: store.id*/}
-                    {/*}*/}
-                  {/*))*/}
-              {/*}}*/}
-              {/*>*/}
-                  {/*Toggle todo*/}
-              {/*</button>*/}
               <ul>
-                  {this.props.todos.map((todo, id) =>
+                  {visibleTodos.map((todo, id) =>
                     <li
                       key={id}
                       onClick={() => store.dispatch(
@@ -59,6 +53,38 @@ class TodoApp extends React.Component {
                     </li>)
                   }
               </ul>
+              <span onClick={() => {
+                  store.dispatch(
+                    {
+                        type: 'SET_VISIBILITY_FILTER',
+                        filter: 'SHOW_ALL'
+                    }
+                  )
+              }}>
+                  All
+              </span>
+              {' '}
+              <span onClick={() => {
+                  store.dispatch(
+                    {
+                        type: 'SET_VISIBILITY_FILTER',
+                        filter: 'SHOW_COMPLETED'
+                    }
+                  )
+              }}>
+                  Completed
+              </span >
+              {' '}
+              <span onClick={() => {
+                  store.dispatch(
+                    {
+                        type: 'SET_VISIBILITY_FILTER',
+                        filter: 'SHOW_ACTIVE'
+                    }
+                  )
+              }}>
+                  Active
+              </span>
           </div>
         )
     }
@@ -66,7 +92,7 @@ class TodoApp extends React.Component {
 
 const render = () => {
     ReactDOM.render(
-      <TodoApp todos={store.getState().todos}/>, document.getElementById('root')
+      <TodoApp {...store.getState()} />, document.getElementById('root')
     );
 };
 
