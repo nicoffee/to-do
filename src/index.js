@@ -4,6 +4,7 @@ import {createStore, combineReducers} from 'redux'
 import todos from './reducers/addTodo'
 import visibilityFilter from './reducers/visibilityFilter'
 import getVisibleTodos from './reducers/getVisibleTodos'
+import {setFilter, addTodo, toggleTodo} from './actions'
 import './index.css'
 
 const todoApp = combineReducers({
@@ -12,12 +13,7 @@ const todoApp = combineReducers({
 });
 
 const setFilterAction = (filter) => {
-    store.dispatch(
-      {
-          type: 'SET_VISIBILITY_FILTER',
-          filter: filter
-      }
-    )
+    store.dispatch(setFilter(filter))
 };
 
 const store = createStore(todoApp);
@@ -34,13 +30,7 @@ class TodoApp extends React.Component {
                   this.input = node;
               }}/>
               <button onClick={() => {
-                  store.dispatch(
-                    {
-                        type: 'ADD_TODO',
-                        text: this.input.value,
-                        id: nextToDoId++
-                    }
-                  );
+                  store.dispatch(addTodo(this.input.value));
                   this.input.value = '';
               }}
               >
@@ -50,12 +40,7 @@ class TodoApp extends React.Component {
                   {visibleTodos.map((todo, id) =>
                     <li
                       key={id}
-                      onClick={() => store.dispatch(
-                        {
-                            type: 'TOGGLE_TODO',
-                            id: todo.id
-                        }
-                      )}
+                      onClick={() => store.dispatch(toggleTodo(todo.id))}
                       style={{textDecoration: (todo.completed) ? 'line-through' : '' }}
                     >
                         {todo.text}
