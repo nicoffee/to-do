@@ -1,0 +1,34 @@
+body {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    display: flex;
+    justify-content: center;
+    font-size: 28px;
+}
+
+input, button {
+    padding: 15px;
+    border: none;
+    font-size: inherit;
+}
+
+input {
+    border: none;
+    border-bottom: 1px solid #bdc3c7;
+}
+
+button
+{
+    color: #FFF;
+    background: #3498db;
+    font-size: inherit;
+}
+
+button:hover
+{
+    background: #2980b9;
+}
+
+.form-group {
+    max-width: 800px;
+    display: flex;
+}
