@@ -25,7 +25,7 @@ class TodoApp extends React.Component {
 
         return (
             <div>
-              <div>
+              <div class="form-group">
                 <input ref={(node) => {
                     this.input = node;
                 }}/>
