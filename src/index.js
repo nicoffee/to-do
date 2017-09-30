@@ -5,7 +5,6 @@ import todos from "./reducers/addTodo";
 import visibilityFilter from "./reducers/visibilityFilter";
 import getVisibleTodos from "./reducers/getVisibleTodos";
 import { setFilter, addTodo, toggleTodo } from "./actions";
-import Counter from "./components/Counter";
 import "./index.css";
 
 const todoApp = combineReducers({
@@ -19,17 +18,34 @@ const setFilterAction = filter => {
   store.dispatch(setFilter(filter));
 };
 
+const FilterLink = ({ filter, currentFilter, children }) => {
+  if (filter === currentFilter) {
+    return <span>{children}</span>;
+  }
+
+  return (
+    <a
+      href="#"
+      onClick={e => {
+        e.preventDefault();
+        setFilterAction(filter);
+      }}
+    >
+      {children}
+    </a>
+  );
+};
+
 class TodoApp extends Component {
   render() {
-    const visibleTodos = getVisibleTodos(
-      this.props.todos,
-      this.props.visibilityFilter
-    );
+    const { todos, visibilityFilter } = this.props;
+
+    const visibleTodos = getVisibleTodos(todos, visibilityFilter);
 
     const handleKeyPress = e => {
       if (e.key === "Enter") {
         store.dispatch(addTodo(this.input.value));
-        event.target.value = "";
+        e.target.value = "";
       }
     };
 
@@ -40,12 +56,14 @@ class TodoApp extends Component {
             ref={node => {
               this.input = node;
             }}
-            onKeyPress={handleKeyPress}/>
+            onKeyPress={handleKeyPress}
+          />
           <button
             onClick={() => {
               store.dispatch(addTodo(this.input.value));
               this.input.value = "";
-            }}>
+            }}
+          >
             Add
           </button>
         </div>
@@ -53,39 +71,28 @@ class TodoApp extends Component {
           {visibleTodos.map((todo, id) => (
             <li
               key={id}
-              className={`todo ${todo.completed ? "todo--completed" : ""}`}>
+              className={`todo ${todo.completed ? "todo--completed" : ""}`}
+            >
               <input
                 id={todo.id}
                 type="checkbox"
-                onClick={() => store.dispatch(toggleTodo(todo.id))}
+                checked={todo.completed}
+                onChange={() => store.dispatch(toggleTodo(todo.id))}
               />
-              <span>{todo.text}</span>
+              <label>{todo.text}</label>
             </li>
           ))}
         </ul>
-        {store.getState().visibilityFilter === "SHOW_ALL" ? (
-          <span
-            onClick={() => {
-              console.log(store.getState());
-              return setFilterAction("SHOW_ALL");
-            }}
-          >
-            All
-          </span>
-        ) : (
-          <b
-            onClick={() => {
-              console.log(store.getState());
-              return setFilterAction("SHOW_ALL");
-            }}
-          >
-            All
-          </b>
-        )}{" "}
-        <span onClick={() => setFilterAction("SHOW_COMPLETED")}>
+        <span>Filter:</span>{" "}
+        <FilterLink filter="SHOW_ALL" currentFilter={visibilityFilter}>
+          All
+        </FilterLink>{" "}
+        <FilterLink filter="SHOW_COMPLETED" currentFilter={visibilityFilter}>
           Completed
-        </span>{" "}
-        <span onClick={() => setFilterAction("SHOW_ACTIVE")}>Active</span>
+        </FilterLink>{" "}
+        <FilterLink filter="SHOW_ACTIVE" currentFilter={visibilityFilter}>
+          Active
+        </FilterLink>
       </div>
     );
   }
