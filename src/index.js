@@ -36,6 +36,24 @@ const FilterLink = ({ filter, currentFilter, children }) => {
   );
 };
 
+const Todo = ({ completed, id, text, onClick }) => (
+  <li className={`todo ${completed ? "todo--completed" : ""}`}>
+    <input type="checkbox"
+           checked={completed} 
+           onChange={onClick}/>
+    <label>{text}</label>
+  </li>
+);
+
+const TodoList = ({ todos, onTodoClick }) => (
+  <ul>
+    {todos.map((todo, idx) => (
+      <Todo key={idx} 
+            onClick={() => onTodoClick(todo.id)} {...todo}/>
+    ))}
+  </ul>
+);
+
 class TodoApp extends Component {
   render() {
     const { todos, visibilityFilter } = this.props;
@@ -67,30 +85,21 @@ class TodoApp extends Component {
             Add
           </button>
         </div>
-        <ul>
-          {visibleTodos.map((todo, id) => (
-            <li
-              key={id}
-              className={`todo ${todo.completed ? "todo--completed" : ""}`}
-            >
-              <input
-                id={todo.id}
-                type="checkbox"
-                checked={todo.completed}
-                onChange={() => store.dispatch(toggleTodo(todo.id))}
-              />
-              <label>{todo.text}</label>
-            </li>
-          ))}
-        </ul>
+        <TodoList
+          todos={visibleTodos}
+          onTodoClick={id => store.dispatch(toggleTodo(id))}
+        />
         <span>Filter:</span>{" "}
-        <FilterLink filter="SHOW_ALL" currentFilter={visibilityFilter}>
+        <FilterLink filter="SHOW_ALL" 
+                    currentFilter={visibilityFilter}>
           All
         </FilterLink>{" "}
-        <FilterLink filter="SHOW_COMPLETED" currentFilter={visibilityFilter}>
+        <FilterLink filter="SHOW_COMPLETED" 
+                    currentFilter={visibilityFilter}>
           Completed
         </FilterLink>{" "}
-        <FilterLink filter="SHOW_ACTIVE" currentFilter={visibilityFilter}>
+        <FilterLink filter="SHOW_ACTIVE" 
+                    currentFilter={visibilityFilter}>
           Active
         </FilterLink>
       </div>
