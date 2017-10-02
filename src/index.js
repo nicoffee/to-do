@@ -14,8 +14,8 @@ const todoApp = combineReducers({
 
 const store = createStore(todoApp);
 
-const FilterLink = ({ filter, currentFilter, onClick, children }) => {
-  if (filter === currentFilter) {
+const Link = ({ active, onClick, children }) => {
+  if (active) {
     return <span>{children}</span>;
   }
 
@@ -31,6 +31,30 @@ const FilterLink = ({ filter, currentFilter, onClick, children }) => {
     </a>
   );
 };
+
+class FilterLink extends Component {
+  componentDidMount() {
+    store.subscribe(() => {
+      this.forceUpdate()
+    })
+  }
+
+  componentWillUnmount() {
+    store.unsubscribe();
+  }
+
+  render() {
+    const props = this.props;
+    const state = store.getState();
+
+    return (
+      <Link active={props.filter === state.visibilityFilter} onClick={() => store.dispatch({
+        type: 'SET_VISIBILITY_FILTER',
+        filter: props.filter
+      })}/>
+    )
+  }
+}
 
 const AddTodo = ({ onKeyPress, onAddClick }) => (
   <div className="form-group">
@@ -71,27 +95,32 @@ const TodoList = ({ todos, onTodoClick }) => (
   </ul>
 );
 
-const Footer = ({ visibilityFilter, onFilterClick }) => (
+
+
+// currentFilter={visibilityFilter}
+// onClick={onFilterClick}
+
+// visibilityFilter={visibilityFilter}
+// onFilterClick={filter => {
+//   store.dispatch(setFilter(filter));
+// }}
+
+
+const Footer = () => (
   <div>
     <span>Filter:</span>{" "}
     <FilterLink
       filter="SHOW_ALL"
-      currentFilter={visibilityFilter}
-      onClick={onFilterClick}
     >
       All
     </FilterLink>{" "}
     <FilterLink
       filter="SHOW_COMPLETED"
-      currentFilter={visibilityFilter}
-      onClick={onFilterClick}
     >
       Completed
     </FilterLink>{" "}
     <FilterLink
       filter="SHOW_ACTIVE"
-      currentFilter={visibilityFilter}
-      onClick={onFilterClick}
     >
       Active
     </FilterLink>
@@ -108,12 +137,7 @@ const TodoApp = ({ todos, visibilityFilter }) => (
       todos={getVisibleTodos(todos, visibilityFilter)}
       onTodoClick={id => store.dispatch(toggleTodo(id))}
     />
-    <Footer
-      visibilityFilter={visibilityFilter}
-      onFilterClick={filter => {
-        store.dispatch(setFilter(filter));
-      }}
-    />
+    <Footer/>
   </div>
 );
 
