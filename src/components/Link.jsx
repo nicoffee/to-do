@@ -2,14 +2,16 @@ import React from "react";
 
 const Link = ({ active, onClick, children }) => {
     if (active) {
-        return (<span>
-            {children}
-        </span>);
+        return (
+            <span>
+                {children}
+            </span>
+        );
     }
 
     return (
         <button
-           onClick={onClick}>
+            onClick={onClick}>
             {children}
         </button>
     )
