@@ -4,12 +4,15 @@ import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
 import todos from "./reducers/addTodo";
 import visibilityFilter from "./reducers/visibilityFilter";
+import configureStore from './configureStore';
 import "./index.css";
 
 
 import AddTodo from './containers/AddTodo';
 import VisibleTodoList from './containers/VisibleTodoList';
 import Footer from './components/Footer';
+
+
 
 const todoApp = combineReducers({
   todos,
@@ -25,7 +28,7 @@ const TodoApp = () => (
 );
 
 ReactDOM.render(
-  <Provider store={createStore(todoApp)}>
+  <Provider store={configureStore()} attriburtre='123' >
     <TodoApp/>
   </Provider>,
   document.getElementById("root")

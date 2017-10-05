@@ -1,8 +1,9 @@
-let nextToDoId = 0;
+import { v4 } from 'uuid';
+
 export const addTodo = (text) => ({
       type: 'ADD_TODO',
-      id: (nextToDoId++).toString(),
-      text,
+      id: v4(),
+      text
 });
 
 export const setVisibilityFilter = (filter) => ({
