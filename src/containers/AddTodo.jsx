@@ -10,7 +10,7 @@ const AddTodo = ({ dispatch }) => (
         this.input = node;
       }}
       onKeyPress={e => {
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && this.input.value) {
           dispatch(addTodo(this.input.value));
           e.target.value = "";
         }
@@ -18,8 +18,10 @@ const AddTodo = ({ dispatch }) => (
     />
     <button
       onClick={() => {
-        dispatch(addTodo(this.input.value));
-        this.input.value = "";
+        if (this.input.value) {
+          dispatch(addTodo(this.input.value));
+          this.input.value = "";
+        }
       }}
     >
       Add

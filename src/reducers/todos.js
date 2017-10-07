@@ -1,6 +1,5 @@
 import { combineReducers } from "redux";
-import todo from './todo';
-
+import todo from "./todo";
 
 const byId = (state = {}, action) => {
   switch (action.type) {
@@ -31,12 +30,10 @@ const todos = combineReducers({
 
 export default todos;
 
-const getAllTodos = (state) =>
-    state.allIds.map(id => state.byId[id])
-
+const getAllTodos = state => state.allIds.map(id => state.byId[id]);
 
 export const getVisibleTodos = (state, filter) => {
-    const allTodos = getAllTodos(state);
+  const allTodos = getAllTodos(state);
   switch (filter) {
     case "all":
       return allTodos;
