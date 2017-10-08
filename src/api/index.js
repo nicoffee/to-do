@@ -20,7 +20,7 @@ const fakeDatabase = {
   ]
 };
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms)); // eslint-disable-line no-undef
 
 export const fetchTodos = filter =>
   delay(500).then(() => {
