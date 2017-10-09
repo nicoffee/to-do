@@ -16,32 +16,36 @@ const byId = (state = {}, action) => {
 
 const allIds = (state = [], action) => {
   switch (action.type) {
-    case "ADD_TODO":
-      return [...state, action.id];
+    case "RECEIVE_TODOS":
+      return action.response.map(todo => todo.id);
     default:
       return state;
   }
 };
 
+const activeIds = (state = [], action) => {
+  switch (action.type) {
+    case "RECEIVE_TODOS":
+      return action.response.map(todo => todo.id);
+    default:
+      return state;
+  }
+};
+
+const idsByFilter = combineReducers({
+  all: allIds,
+  active: activeIds,
+  completed: completedIds
+});
+
 const todos = combineReducers({
   byId,
-  allIds
+  idsByFilter
 });
 
 export default todos;
 
-const getAllTodos = state => state.allIds.map(id => state.byId[id]);
-
 export const getVisibleTodos = (state, filter) => {
-  const allTodos = getAllTodos(state);
-  switch (filter) {
-    case "all":
-      return allTodos;
-    case "completed":
-      return allTodos.filter(todo => todo.completed);
-    case "active":
-      return allTodos.filter(todo => !todo.completed);
-    default:
-      throw new Error(`Unknown filter: ${filter}.`);
-  }
+  const ids = state.idsByFilter[filter];
+  return ids.map(id => state.byId[id]);
 };
