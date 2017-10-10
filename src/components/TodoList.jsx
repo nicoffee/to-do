@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 
 const TodoList = ({ todos, onTodoClick }) => (
   <ul>
-    {todos.map((todo, idx) => (
+    {todos.map((todo, idx) => { console.log('todo', todo); return(
       <Todo key={idx} onClick={() => onTodoClick(todo.id)} {...todo} />
-    ))}
+    )})}
   </ul>
 );
 
