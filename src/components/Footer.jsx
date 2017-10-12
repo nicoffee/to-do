@@ -7,10 +7,10 @@ const Footer = ({ store }) => (
     <span>Filter:</span>
     <FilterLink filter="all" store={store}>
       All
-    </FilterLink>
+    </FilterLink>,
     <FilterLink filter="completed" store={store}>
       Completed
-    </FilterLink>
+    </FilterLink>,
     <FilterLink filter="active" store={store}>
       Active
     </FilterLink>
