@@ -8,7 +8,6 @@ const createList = filter => {
           action.response.map(todo => todo.id) :
           state;
       case "ADD_TODO_SUCCESS":
-        console.log('SUCCEsss');
         return filter !== 'completed' ? 
           [...state, action.response.id] :
           state;
