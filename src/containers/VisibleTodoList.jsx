@@ -40,7 +40,7 @@ class VisibleTodoList extends Component {
 
 VisibleTodoList.propTypes = {
   toggleTodo: PropTypes.func.isRequired,
-  errorMessage: PropTypes.string.isRequired,
+  errorMessage: PropTypes.string,
   todos: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
   filter: PropTypes.string.isRequired,

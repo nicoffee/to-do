@@ -18,7 +18,7 @@ const Footer = ({store}) => (
 );
 
 Footer.propTypes = {
-  store: PropTypes.object.isRequired
+  store: PropTypes.object
 };
 
 export default Footer;
