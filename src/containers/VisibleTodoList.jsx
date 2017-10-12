@@ -49,8 +49,6 @@ VisibleTodoList.propTypes = {
 
 const mapStateToProps = (state, {match}) => {
   const filter = match.params.filter || "all";
-  console.log('match', match);
-  console.log('filter match', filter);
   return {
     todos: getVisibleTodos(state, filter),
     errorMessage: getErrorMessage(state, filter),

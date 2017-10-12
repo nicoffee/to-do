@@ -1,26 +1,12 @@
 import {v4} from "uuid";
 
 const fakeDatabase = {
-  todos: [
-    {
-      id: v4(),
-      text: "So",
-      completed: true
-    }, {
-      id: v4(),
-      text: "Many",
-      completed: true
-    }, {
-      id: v4(),
-      text: "Things",
-      completed: false
-    }
-  ]
+  todos: []
 };
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms)); // eslint-disable-line no-undef
 
-export const fetchTodos = filter => delay(500).then(() => {
+export const fetchTodos = filter => delay(0).then(() => {
   switch (filter) {
   case "all":
     return fakeDatabase.todos;
