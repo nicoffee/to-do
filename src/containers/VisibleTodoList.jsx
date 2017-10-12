@@ -45,10 +45,12 @@ VisibleTodoList.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   filter: PropTypes.string.isRequired,
   fetchTodos: PropTypes.func.isRequired
-}
+};
 
 const mapStateToProps = (state, {match}) => {
   const filter = match.params.filter || "all";
+  console.log('match', match);
+  console.log('filter match', filter);
   return {
     todos: getVisibleTodos(state, filter),
     errorMessage: getErrorMessage(state, filter),
