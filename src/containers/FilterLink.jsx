@@ -1,16 +1,18 @@
 import React from "react";
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const FilterLink = ({ filter, children }) => (
-    <Link to={filter === 'all' ? '' : filter}>
-        {children}
-    </Link>
+const FilterLink = ({filter, children}) => (
+  <Link to={filter === 'all'
+    ? ''
+    : filter}>
+    {children}
+  </Link>
 )
 
 FilterLink.propTypes = {
-    filter: PropTypes.string,
-    children: PropTypes.string
+  filter: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired
 }
 
 export default FilterLink;

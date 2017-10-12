@@ -2,7 +2,7 @@ import React from "react";
 import FilterLink from "./../containers/FilterLink";
 import PropTypes from "prop-types";
 
-const Footer = ({ store }) => (
+const Footer = ({store}) => (
   <div>
     <span>Filter:</span>
     <FilterLink filter="all" store={store}>
@@ -18,7 +18,7 @@ const Footer = ({ store }) => (
 );
 
 Footer.propTypes = {
-  store: PropTypes.object
+  store: PropTypes.object.isRequired
 };
 
 export default Footer;

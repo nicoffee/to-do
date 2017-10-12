@@ -1,17 +1,14 @@
-import { normalize } from 'normalizr';
+import {normalize} from 'normalizr';
 import * as schema from './schema';
 import * as api from "./../api";
-import { getIsFetching } from "./../reducers";
+import {getIsFetching} from "./../reducers";
 
 export const fetchTodos = filter => (dispatch, getState) => {
   if (getIsFetching(getState(), filter)) {
-    return Promise.resolve();
+    return Promise.resolve(); // eslint-disable-line no-undef
   }
 
-  dispatch({
-    type: "FETCH_TODOS_REQUEST",
-    filter
-  });
+  dispatch({type: "FETCH_TODOS_REQUEST", filter});
 
   return api
     .fetchTodos(filter)
@@ -21,8 +18,7 @@ export const fetchTodos = filter => (dispatch, getState) => {
         filter,
         response: normalize(response, schema.arrayOfTodos)
       });
-    },
-    error => {
+    }, error => {
       dispatch({
         type: "FETCH_TODOS_FAILURE",
         filter,
@@ -31,16 +27,18 @@ export const fetchTodos = filter => (dispatch, getState) => {
     });
 };
 
-export const addTodo = text => (dispatch) => 
-  api.addTodo(text).then(response => {
+export const addTodo = text => (dispatch) => api
+  .addTodo(text)
+  .then(response => {
     dispatch({
       type: 'ADD_TODO_SUCCESS',
       response: normalize(response, schema.todo)
     });
   });
 
-export const toggleTodo = id => dispatch => 
-  api.toggleTodo(id).then(response => {
+export const toggleTodo = id => dispatch => api
+  .toggleTodo(id)
+  .then(response => {
     dispatch({
       type: 'TOGGLE_TODO_SUCCESS',
       response: normalize(response, schema.todo)
